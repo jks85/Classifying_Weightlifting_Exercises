@@ -11,13 +11,17 @@ output:
 \
 The goal of this project is to classify human activity using experimental data. Data from the Human Activity Recognition (HAR) project was used. Subjects performed  weight lifting exercises described by the `classe` variable with levels `A`, `B`, `C`, `D`, and `E`. Level `A` corresponded to the exercise being performed correctly, while other levels corresponding to different methods of incorrect performance. All levels were performed with guidance by an instructor.
 
-See the README on Github for a link to the paper.
+See the README on my Github for a link to the paper.
   
   
 ## Summary
-A random forest model on 52 predictors was used to predict `classe` with 99.5% accuracy in the test sample (0.5% out of sample error). Additionally, this model predicted a separate validation set with 100% accuracy. Somewhat surprisingly, the model outperformed a random forest preprocessed using PCA.
+The final model chosen was a "naive" random forest model built using **5-fold cross validation on 52 unprocessed predictors**. The model **predicted `classe` with 99.5% accuracy in the test set (0.5% out of sample error)**. Additionally, this model predicted a separate validation set with 100% accuracy. Somewhat surprisingly, the model outperformed a random forest preprocessed using PCA. See the *Feature Selection* section for additional discussion.
   
+The final model was built by first cleaning the data set. The data included 100 variables which contained ~ 98% missing data. These variables were removed rather than attempting imputations. Additionally, 7 identifier variables not needed for classification were removed. The remaining 52 predictors were used to predict `classe`.
 
+Features were explored using a correlation matrix, heatmap, and Principal Component Analysis (PCA). This analysis revealed highly correlated features within the data. Thenaive random forest model (99.5%) was built *after* evaluating a random forest using PCA preprocessing (98% accuracy) and a Gradient Boosted Machine (~80% accuracy). The high correlation among features suggested the use of PCA may be effective but this was not the case in practice.
+
+Model stacking was considered, but was not explored due to limited computing power and the high accuracy of the naive random forest model.
 
 ## Package dependencies
 
@@ -142,7 +146,7 @@ The following methods were used to explore dimension reduction.
 * Heatmap 
 * PCA pre-processing
   
-A vizualized correlation matrix and heatmap are displayed below. Feature names are not displayed in the correlation plot for improved readability.
+A visualized correlation matrix and heatmap are displayed below. Feature names are not displayed in the correlation plot for improved readability.
   
 
 ```{r feat_select, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
@@ -171,7 +175,7 @@ PCA preprocessing indicated that 25 principal components were needed to account 
 Note: 18 principal components captured 90% of the variance, 36 components captured 99% of the variance, and 52 components captured 100% of the variance in the training set. Again due to concerns with non-normality of features these values may not be reliable.
 
 
-## Model Fitting
+## Model Building
   
 The following models were considered  using the training set
   
