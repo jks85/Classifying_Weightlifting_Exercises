@@ -57,7 +57,7 @@ library(doParallel)
 
 ## Loading Data
   
-The data is downloaded if necessary. The code is suppressed.
+The data is downloaded if necessary. Code is suppressed.
 
 ```{r load_data, cache= TRUE, echo = FALSE}
 
